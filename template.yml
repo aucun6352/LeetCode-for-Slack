@@ -1,0 +1,41 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  LeetCodeforSlackJSLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      ContentUri: js-layer/
+      LayerName: LeetCodeforSlackJSLayer
+      RetentionPolicy: Retain
+      CompatibleRuntimes:
+        - nodejs18.x
+    Metadata:
+      BuildMethod: nodejs18.x
+
+  LeetCodeforSlack:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: LeetCodeforSlack
+      CodeUri: slack/
+      Handler: app.lambdaHandler
+      Runtime: nodejs18.x
+      Layers:
+        - !Ref LeetCodeforSlackJSLayer
+      Environment:
+        Variables:
+          SLACK_APP_TOKEN: '{{resolve:secretsmanager:SupportBot:SecretString:SLACK_APP_TOKEN}}'
+          SLACK_BOT_TOKEN: '{{resolve:secretsmanager:SupportBot:SecretString:SLACK_BOT_TOKEN}}'
+          SLACK_SIGNING_SECRET: '{{resolve:secretsmanager:SupportBot:SecretString:SLACK_SIGNING_SECRET}}'
+
+  LeetCodeforSlackTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: LeetCode-for-Slack
+      KeySchema:
+        - AttributeName: type
+          KeyType: HASH
+      AttributeDefinitions:
+        - AttributeName: type
+          AttributeType: S
+      BillingMode: PAY_PER_REQUEST

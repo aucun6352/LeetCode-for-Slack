@@ -1,0 +1,17 @@
+{
+  "name": "leetcode-for-slack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "gglee6352@gmail.com",
+  "dependencies": {
+    "@slack/bolt": "^3.12.2",
+    "aws-sdk": "^2.1319.0",
+    "moment": "^2.29.4",
+    "moment-timezone": "^0.5.40",
+    "node-fetch": "^2.6.9"
+  }
+}

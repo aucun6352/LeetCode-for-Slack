@@ -1,0 +1,12 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "LeetCode-for-Slack"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-17smd076x7o4a"
+s3_prefix = "LeetCode-for-Slack"
+region = "ap-northeast-2"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+disable_rollback = true
+image_repositories = []
