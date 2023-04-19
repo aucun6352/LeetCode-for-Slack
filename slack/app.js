@@ -37,11 +37,14 @@ exports.lambdaHandler = async (event, context, callback) => {
   if (lastMessage.ts) {
     let userList = lastMessage["users"]
 
-    userList = await getAcUserList(userList, problem["slug"])
+    userList = await getAcUserList(userList, lastMessage["slug"])
+    
     const acUserList = userList[0]
     const anotherUserList = userList[1]
 
     const text = "- 문제 푼사람 \n" + acUserList.join("\n") + "\n\n\n" + "- 나머지 \n" + anotherUserList.join("\n")
+    
+    console.log(text)
 
     result = await client.chat.postMessage({
       channel: process.env.channelId,
@@ -84,10 +87,15 @@ async function getAcUserList(userList, slug) {
     };
 
     let data = await fetch(url, requestOptions).then(response => response.json())
+    
+    console.log(`data: ${JSON.stringify(data)}`)
 
     let submission = data["data"]["recentAcSubmissionList"].find(ac => ac["titleSlug"] == slug)
+    
+    console.log(`submission: ${submission}`)
 
     if (submission) {
+      console.log(`slack_id: ${user["slack_id"]}`)
       acUserList.push(user["slack_id"])
     } else {
       anotherUserList.push(user["slack_id"])
